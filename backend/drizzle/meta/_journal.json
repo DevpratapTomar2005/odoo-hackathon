@@ -22,6 +22,20 @@
       "when": 1783836884037,
       "tag": "0002_chemical_shriek",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1783839458762,
+      "tag": "0003_sparkling_whiplash",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1783840176085,
+      "tag": "0004_nice_payback",
+      "breakpoints": true
     }
   ]
 }
