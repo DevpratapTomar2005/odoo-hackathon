@@ -209,3 +209,45 @@ export const maintenanceLogsTable = pgTable(
       .notNull(),
   }
 );
+
+export const fuelLogsTable = pgTable(
+  "fuel_logs",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    vehicleId: uuid("vehicle_id")
+      .notNull()
+      .references(() => vehiclesTable.id, { onDelete: "cascade" }),
+    tripId: uuid("trip_id").references(() => tripsTable.id, {
+      onDelete: "set null",
+    }),
+    liters: numeric("liters", { precision: 10, scale: 2 }).notNull(),
+    cost: numeric("cost", { precision: 12, scale: 2 }).notNull(),
+    date: date("date").notNull(),
+    createdBy: uuid("created_by").references(() => usersTable.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  }
+);
+
+
+export const expensesTable = pgTable(
+  "expenses",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    vehicleId: uuid("vehicle_id")
+      .notNull()
+      .references(() => vehiclesTable.id, { onDelete: "cascade" }),
+    type: text().notNull(),
+    amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
+    date: date("date").notNull(),
+    createdBy: uuid("created_by").references(() => usersTable.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  }
+);

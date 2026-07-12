@@ -7,6 +7,8 @@ import vehicleRoutes from "./routes/vehicles.routes.js";
 import driverRoutes from './routes/drivers.routes.js';
 import tripRoutes from './routes/trips.routes.js';
 import maintenaceRoutes from './routes/maintenance.routes.js';
+import fuelRoutes from './routes/fuel.routes.js';
+import expenssesRoutes from './routes/expensses.routes.js';
 
 const app = express();
 
@@ -23,6 +25,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers",driverRoutes);
 app.use("/api/maintenance", maintenaceRoutes);
+app.use('/api/fuel', fuelRoutes);
+app.use('/api/expenses', expenssesRoutes);
 
 app.use(globalErrorHandler);
 
