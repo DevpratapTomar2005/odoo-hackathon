@@ -1,5 +1,5 @@
 import express from "express";
-import expensesController from "../controllers/expenses.controller.js";
+import expensesController from "../controllers/expensses.controller.js";
 import { verifyAuth } from "../middlewares/verifyAuth.middleware.js";
 import { authorizeRoles } from "../middlewares/authorizeRole.middleware.js";
 

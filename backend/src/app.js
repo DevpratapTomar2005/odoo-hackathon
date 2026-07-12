@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import {globalErrorHandler} from "./middlewares/globalErrorHandler.middleware.js";
 import cookieParser from "cookie-parser";
+import envConfig from './config/env.config.js';
 import authRoutes from "./routes/auth.routes.js";
 import vehicleRoutes from "./routes/vehicles.routes.js";
 import driverRoutes from './routes/drivers.routes.js';
@@ -12,7 +13,11 @@ import expenssesRoutes from './routes/expensses.routes.js';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin:envConfig.CORS_ORIGIN,
+  credentials:true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
