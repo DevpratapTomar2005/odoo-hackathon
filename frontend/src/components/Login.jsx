@@ -4,7 +4,6 @@ import { useLogin } from "../hooks/useAuth.js";
 import { useDispatch } from 'react-redux';
 import { setUser } from '../slices/authSlice.js';
 
-
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -57,7 +56,10 @@ export default function Login() {
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:bg-gray-100 sm:text-sm"
                 {...register("email", {
                   required: "Email address is required",
-                  pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Invalid email" },
+                  pattern: { 
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 
+                    message: "Invalid email address" 
+                  },
                 })}
               />
               {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>}
@@ -70,7 +72,9 @@ export default function Login() {
                 type="password"
                 disabled={loading}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:bg-gray-100 sm:text-sm"
-                {...register("password", { required: "Password is required", minLength: { value: 8, message: "Min 8 characters" } })}
+                {...register("password", { 
+                  required: "Password is required" 
+                })}
               />
               {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>}
             </div>

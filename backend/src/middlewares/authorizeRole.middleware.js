@@ -10,7 +10,7 @@ export const authorizeRoles = (...allowedRoles) => {
             throw new ApiError(401, "Unauthorized: User role not found");
         }
 
-        if (!allowedRoles.includes(userRole.toLowerCase())) {
+        if (!allowedRoles.includes(userRole.toUpperCase())) {
             throw new ApiError(403, "Forbidden: Insufficient permissions");
         }
 
