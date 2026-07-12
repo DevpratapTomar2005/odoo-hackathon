@@ -185,3 +185,27 @@ export const tripsTable = pgTable(
       .notNull(),
   }
 );
+
+export const maintenanceLogsTable = pgTable(
+  "maintenance_logs",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    vehicleId: uuid("vehicle_id")
+      .notNull()
+      .references(() => vehiclesTable.id, { onDelete: "cascade" }),
+    serviceTyp: text("service_type").notNull(),
+    cost: numeric("cost", { precision: 12, scale: 2 }).notNull().default("0"),
+    status: maintenanceStatusEnum("status").notNull().default("active"),
+    serviceDate:date("service_date").notNull(),
+    createdBy: uuid("created_by").references(() => usersTable.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  }
+);
