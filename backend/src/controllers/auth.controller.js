@@ -204,9 +204,31 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, null, "User logged out successfully"));
 });
 
+const getUsersByRole = asyncHandler(async (req, res) => {
+  const { role } = req.query;
+
+  if (!role) {
+    throw new ApiError(400, "Role query parameter is required");
+  }
+
+  const users = await db
+    .select({
+      id: usersTable.id,
+      name: usersTable.name,
+      email: usersTable.email,
+    })
+    .from(usersTable)
+    .where(eq(usersTable.role, role));
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, users, "Users retrieved successfully"));
+});
+
 export default {
   registerUser,
   loginUser,
   refreshToken,
   logoutUser,
+  getUsersByRole
 };

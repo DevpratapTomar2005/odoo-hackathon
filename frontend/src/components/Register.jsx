@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useNavigate,Link } from "react-router";
 import { useRegister } from "../hooks/useAuth.js";
 import { useDispatch } from 'react-redux';
 import { setUser } from '../slices/authSlice.js';
@@ -12,6 +13,7 @@ const ROLES = [
 ];
 
 export default function Register() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutateAsync: registerUser, isPending, error: apiError } = useRegister();
 
@@ -24,6 +26,7 @@ export default function Register() {
       const response = await registerUser({ data });
       dispatch(setUser(response.data.user));
       reset();
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       console.error(err);
     }
@@ -72,6 +75,8 @@ export default function Register() {
               {errors.confirmPassword && <p className="text-xs text-red-600">{errors.confirmPassword.message}</p>}
             </div>
           </div>
+
+          <div>Already have account? <Link to="/"><span className="font-semibold underline">Login</span></Link></div>
 
           <button type="submit" disabled={loading} className="w-full flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-white">
             {loading ? "Registering..." : "Register"}
