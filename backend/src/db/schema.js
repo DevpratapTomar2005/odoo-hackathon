@@ -8,7 +8,8 @@ import {
   timestamp,
   pgEnum,
   unique,
-  numeric
+  numeric,
+  date
 } from "drizzle-orm/pg-core";
 
 export const roleEnum = pgEnum("role", [
@@ -113,3 +114,27 @@ export const vehiclesTable = pgTable("vehicles", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+
+export const driversTable = pgTable(
+  "drivers",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id").references(() => usersTable.id, {
+      onDelete: "cascade",
+    }).notNull(), 
+    name: varchar("name", { length: 255 }).notNull(),
+    licenseNumber: varchar("license_number", { length: 50 }).unique().notNull(),
+    licenseCategory: varchar("license_category", { length: 50 }).notNull(),
+    licenseExpiryDate: date("license_expiry_date").notNull(),
+    contactNumber: varchar("contact_number", { length: 20 }).notNull(),
+    status: driverStatusEnum("status").notNull().default("available"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  }
+);
