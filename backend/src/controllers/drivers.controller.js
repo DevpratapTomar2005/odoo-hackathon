@@ -18,7 +18,6 @@ const addDriver = asyncHandler(async (req, res) => {
 
   if (
     !userId ||
-    !name ||
     !licenseNumber ||
     !licenseCategory ||
     !licenseExpiryDate ||
