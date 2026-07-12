@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useNavigate,Link } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useRegister } from "../hooks/useAuth.js";
 import { useDispatch } from 'react-redux';
 import { setUser } from '../slices/authSlice.js';
@@ -17,9 +17,11 @@ export default function Register() {
   const dispatch = useDispatch();
   const { mutateAsync: registerUser, isPending, error: apiError } = useRegister();
 
-  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, getValues } = useForm({
-    defaultValues: { name: "", email: "", password: "", role: "driver" },
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, watch } = useForm({
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "", role: "driver" },
   });
+
+  const password = watch("password");
 
   const onSubmit = async (data) => {
     try {
@@ -47,13 +49,16 @@ export default function Register() {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">Full Name</label>
-              <input disabled={loading} {...register("name", { required: "Required" })} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+              <input disabled={loading} {...register("name", { required: "Full name is required" })} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
               {errors.name && <p className="text-xs text-red-600">{errors.name.message}</p>}
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700">Email</label>
-              <input disabled={loading} {...register("email", { required: "Required" })} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+              <input disabled={loading} {...register("email", { 
+                required: "Email is required",
+                pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Invalid email format" }
+              })} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
               {errors.email && <p className="text-xs text-red-600">{errors.email.message}</p>}
             </div>
 
@@ -66,12 +71,22 @@ export default function Register() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">Password</label>
-              <input type="password" disabled={loading} {...register("password", { required: "Required" })} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+              <input type="password" disabled={loading} {...register("password", { 
+                required: "Password is required",
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                  message: "Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special character"
+                }
+              })} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+              {errors.password && <p className="text-xs text-red-600">{errors.password.message}</p>}
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-              <input type="password" disabled={loading} {...register("confirmPassword", { validate: (v) => v === getValues("password") || "Match error" })} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+              <input type="password" disabled={loading} {...register("confirmPassword", { 
+                required: "Please confirm your password",
+                validate: (v) => v === password || "Passwords do not match" 
+              })} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
               {errors.confirmPassword && <p className="text-xs text-red-600">{errors.confirmPassword.message}</p>}
             </div>
           </div>
