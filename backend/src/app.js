@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
 import vehicleRoutes from "./routes/vehicles.routes.js";
 import driverRoutes from './routes/drivers.routes.js';
+import tripRoutes from './routes/trips.routes.js';
 
 const app = express();
 

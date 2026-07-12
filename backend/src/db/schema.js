@@ -138,3 +138,50 @@ export const driversTable = pgTable(
       .notNull(),
   }
 );
+
+export const tripsTable = pgTable(
+  "trips",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    source: varchar("source", { length: 255 }).notNull(),
+    destination: varchar("destination", { length: 255 }).notNull(),
+    vehicleId: uuid("vehicle_id")
+      .notNull()
+      .references(() => vehiclesTable.id, { onDelete: "restrict" }),
+    driverId: uuid("driver_id")
+      .notNull()
+      .references(() => driversTable.id, { onDelete: "restrict" }),
+    cargoWeightKg: numeric("cargo_weight_kg", {
+      precision: 10,
+      scale: 2,
+    }).notNull(),
+    plannedDistanceKm: numeric("planned_distance_km", {
+      precision: 10,
+      scale: 2,
+    }).notNull(),
+    actualDistanceKm: numeric("actual_distance_km", {
+      precision: 10,
+      scale: 2,
+    }),
+    startOdometerKm: numeric("start_odometer_km", { precision: 12, scale: 2 }),
+    endOdometerKm: numeric("end_odometer_km", { precision: 12, scale: 2 }),
+    fuelConsumedLiters: numeric("fuel_consumed_liters", {
+      precision: 10,
+      scale: 2,
+    }),
+    status: tripStatusEnum("status").default("draft").notNull(),
+    dispatchedAt: timestamp("dispatched_at", { withTimezone: true }),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+    createdBy: uuid("created_by").references(() => usersTable.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  }
+);
