@@ -3,11 +3,13 @@ import cors from "cors";
 import {globalErrorHandler} from "./middlewares/globalErrorHandler.middleware.js";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
+import vehicleRoutes from "./routes/vehicles.routes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/health", (req, res) => {
@@ -15,7 +17,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/vehicles", vehicleRoutes);
 
 
 app.use(globalErrorHandler);

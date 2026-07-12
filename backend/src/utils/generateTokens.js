@@ -8,7 +8,7 @@ export const generateAccessToken = (user, sessionId) => {
     sid: sessionId,
     role: user.role,
   };
-  return jwt.sign(payload, envConfig.JWT_SECRET, { expiresIn: "1m" });
+  return jwt.sign(payload, envConfig.JWT_SECRET, { expiresIn: "15m" });
 };
 
 export const generateRefreshToken = (user, sessionId) => {
