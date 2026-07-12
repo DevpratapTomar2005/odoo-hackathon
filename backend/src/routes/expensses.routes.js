@@ -5,7 +5,19 @@ import { authorizeRoles } from "../middlewares/authorizeRole.middleware.js";
 
 const router = express.Router();
 
-router.route("/create").post(verifyAuth, expensesController.addExpense);
-router.route("/all").get(verifyAuth, expensesController.getAllExpenses);
+router
+  .route("/create")
+  .post(
+    verifyAuth,
+    authorizeRoles("FLEET_MANAGER", "FINANACIAL_OFFICER"),
+    expensesController.addExpense,
+  );
+router
+  .route("/all")
+  .get(
+    verifyAuth,
+    authorizeRoles("FLEET_MANAGER", "FINANACIAL_OFFICER"),
+    expensesController.getAllExpenses,
+  );
 
 export default router;

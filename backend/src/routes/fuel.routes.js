@@ -5,13 +5,33 @@ import { authorizeRoles } from "../middlewares/authorizeRole.middleware.js";
 
 const router = express.Router();
 
-router.route("/create").post(verifyAuth, fuelController.addFuelLog);
-router.route("/all").get(verifyAuth, fuelController.getAllFuelLogs);
+router
+  .route("/create")
+  .post(
+    verifyAuth,
+    authorizeRoles("FLEET_MANAGER", "FINANACIAL_OFFICER"),
+    fuelController.addFuelLog,
+  );
+router
+  .route("/all")
+  .get(
+    verifyAuth,
+    authorizeRoles("FLEET_MANAGER", "FINANACIAL_OFFICER"),
+    fuelController.getAllFuelLogs,
+  );
 router
   .route("/operational-cost/all")
-  .get(verifyAuth, fuelController.getAllVehiclesOperationalCost);
+  .get(
+    verifyAuth,
+    authorizeRoles("FLEET_MANAGER", "FINANACIAL_OFFICER"),
+    fuelController.getAllVehiclesOperationalCost,
+  );
 router
   .route("/operational-cost/:vehicleId")
-  .get(verifyAuth, fuelController.getVehicleOperationalCost);
+  .get(
+    verifyAuth,
+    authorizeRoles("FLEET_MANAGER", "FINANACIAL_OFFICER"),
+    fuelController.getVehicleOperationalCost,
+  );
 
 export default router;
