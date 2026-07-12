@@ -7,19 +7,19 @@ const router = express.Router();
 
 router
   .route("/create")
-  .post(verifyAuth, maintenanceController.createMaintenanceLog);
+  .post(verifyAuth,authorizeRoles("FLEET_MANAGER", "SAFETY_OFFICER"), maintenanceController.createMaintenanceLog);
 
 router
   .route("/all")
-  .get(verifyAuth, maintenanceController.getAllMaintenanceLogs);
+  .get(verifyAuth,authorizeRoles("FLEET_MANAGER", "SAFETY_OFFICER"), maintenanceController.getAllMaintenanceLogs);
 
 router
   .route("/:id")
-  .get(verifyAuth, maintenanceController.getMaintenanceLogById);
+  .get(verifyAuth,authorizeRoles("FLEET_MANAGER", "SAFETY_OFFICER"), maintenanceController.getMaintenanceLogById);
 
 router
   .route("/close/:id")
-  .patch(verifyAuth, maintenanceController.closeMaintenanceLog);
+  .patch(verifyAuth,authorizeRoles("FLEET_MANAGER", "SAFETY_OFFICER"), maintenanceController.closeMaintenanceLog);
   
 
 export default router;
