@@ -1,9 +1,12 @@
 import { useForm } from "react-hook-form";
+import { useNavigate, Link } from "react-router";
 import { useLogin } from "../hooks/useAuth.js";
 import { useDispatch } from 'react-redux';
 import { setUser } from '../slices/authSlice.js';
 
+
 export default function Login() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutateAsync: login, isPending, error: apiError } = useLogin();
 
@@ -21,6 +24,7 @@ export default function Login() {
       const response = await login({ data });
       dispatch(setUser(response.data.user));
       reset();
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       console.error(err);
     }
@@ -29,7 +33,7 @@ export default function Login() {
   const loading = isSubmitting || isPending;
 
   return (
-<div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-8 shadow-lg">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">Login to your account</h2>
@@ -41,8 +45,6 @@ export default function Login() {
             {apiError.message}
           </div>
         )}
-
-        
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="space-y-4">
@@ -73,7 +75,7 @@ export default function Login() {
               {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>}
             </div>
           </div>
-
+          <div>Dont have account? <Link to="/register"><span className="font-semibold underline">Register</span></Link></div>
           <button
             type="submit"
             disabled={loading}
